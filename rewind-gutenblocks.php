@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name:       Rewind Gutenblocks
  * Description:       Example static block scaffolded with Create Block tool.
@@ -20,7 +21,15 @@
  *
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
  */
-function create_rewind_blocks() {
-	register_block_type( __DIR__ . '/build' );
+function create_rewind_blocks()
+{
+	register_block_type(__DIR__ . '/build/quick-links');
+
 }
-add_action( 'init', 'create_rewind_blocks' );
+
+add_action('init', 'create_rewind_blocks');
+
+
+function price_slider_callback(){
+	return 'yo';
+}
