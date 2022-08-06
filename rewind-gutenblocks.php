@@ -29,7 +29,3 @@ function create_rewind_blocks()
 
 add_action('init', 'create_rewind_blocks');
 
-
-function price_slider_callback(){
-	return 'yo';
-}

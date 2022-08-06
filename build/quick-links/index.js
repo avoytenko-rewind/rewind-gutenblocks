@@ -16,9 +16,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./editor.scss */ "./src/quick-links/editor.scss");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./editor.scss */ "./src/quick-links/editor.scss");
 
 
 /**
@@ -26,6 +28,7 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @see https://developer.wordpress.org/block-editor/packages/packages-i18n/
  */
+
 
 /**
  * React hook that is used to mark the block wrapper element.
@@ -52,8 +55,104 @@ __webpack_require__.r(__webpack_exports__);
  * @return {WPElement} Element to render.
  */
 
-function Edit() {
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)(), (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Rewind Gutenblocks – hello from the editor!', 'rewind-gutenblocks'));
+function Edit(_ref) {
+  let {
+    attributes,
+    setAttributes
+  } = _ref;
+  const {
+    links
+  } = attributes;
+  const linkKeys = Object.keys(links);
+
+  function saveLinkText(text, key) {
+    const newLinks = { ...links
+    };
+    newLinks[key].value = text;
+    setAttributes({
+      links: newLinks
+    });
+  }
+
+  function addNewLink() {
+    const countKeys = Object.keys(links).length + 1;
+    const newLinks = { ...links,
+      [countKeys]: {
+        id: countKeys,
+        value: ''
+      }
+    };
+    console.log(newLinks);
+    setAttributes({
+      links: newLinks
+    });
+  }
+
+  function deleteLink(key) {
+    const newLinks = { ...links
+    };
+    delete newLinks[key];
+    setAttributes({
+      links: newLinks
+    });
+  }
+
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps)(), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    style: {
+      display: "flex",
+      "align-items": "center",
+      padding: "5px 0px"
+    }
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText, {
+    className: "mt-0 mb-0 has-custom-font-size has-normal-font-size",
+    tagName: "h4" // The tag here is the element output and editable in the admin
+    ,
+    value: attributes.heading // Any existing content, either from the database or an attribute default
+    ,
+    allowedFormats: ['core/bold', 'core/italic'] // Allow the content to be made bold or italic, but do not allow other formatting options
+    ,
+    onChange: heading => setAttributes({
+      heading
+    }) // Store updated content as a block attribute
+    ,
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Heading...') // Display this text before any content has been added by the user
+
+  }), linkKeys && linkKeys.map(currentKey => {
+    const currentLink = links[currentKey];
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "mx-1",
+      style: {
+        border: "1px dashed",
+        padding: "5px",
+        "border-radius": "4px",
+        display: "flex",
+        "align-items": "center"
+      }
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText, {
+      key: currentLink.id,
+      className: "has-custom-font-size has-normal-font-size",
+      tagName: "span" // The tag here is the element output and editable in the admin
+      ,
+      value: currentLink.value // Any existing content, either from the database or an attribute default
+      // allowedFormats={['core/bold', 'core/italic']} // Allow the content to be made bold or italic, but do not allow other formatting options
+      ,
+      onChange: value => saveLinkText(value, currentLink.id) // Store updated content as a block attribute
+      ,
+      placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Link here...') // Display this text before any content has been added by the user
+
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+      onClick: () => deleteLink(currentLink.id),
+      isDestructive: true,
+      variant: "link"
+    }, "Delete"));
+  }), !linkKeys.length && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+    className: "ms-1 has-custom-font-size has-small-font-size"
+  }, "Add your links here..."), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+    onClick: addNewLink,
+    variant: "secondary"
+  }, "Add Link ", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Icon, {
+    icon: "plus"
+  }))));
 }
 
 /***/ }),
@@ -103,6 +202,18 @@ __webpack_require__.r(__webpack_exports__);
   /**
    * @see ./edit.js
    */
+  attributes: {
+    heading: {
+      type: 'string',
+      source: 'html',
+      selector: 'h4',
+      default: 'Quick Links:'
+    },
+    links: {
+      type: 'object',
+      default: {}
+    }
+  },
   edit: _edit__WEBPACK_IMPORTED_MODULE_2__["default"],
 
   /**
@@ -155,11 +266,13 @@ __webpack_require__.r(__webpack_exports__);
  * @return {WPElement} Element to render.
  */
 
-function save() {
+function save(_ref) {
+  let {
+    attributes
+  } = _ref;
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps.save(), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "d-none d-xl-block secondary-nav navbar navbar-expand-lg py-0"
+    className: "d-none d-xl-block quick-links secondary-nav navbar navbar-expand-lg py-0"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    id: "secondaryNav",
     className: "secondary-nav__wrapper border-blue-light border-1 border-top border-bottom py-2"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "container"
@@ -171,7 +284,7 @@ function save() {
     className: "w-100 d-flex align-items-center"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
     className: "mb-0 text-smaller text-center"
-  }, "Quick Links:"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, attributes.heading), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "navbar-toc rounded-corners-lg px-3 gap-3"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("ul", {
     className: "navbar-nav"
@@ -182,28 +295,7 @@ function save() {
     target: "_self",
     className: "nav-link text-smaller",
     rel: "noopener"
-  }, "Features")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
-    className: "nav-item menu-item"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-    href: "#compliance",
-    target: "_self",
-    className: "nav-link text-smaller",
-    rel: "noopener"
-  }, "Compliance")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
-    className: "nav-item menu-item"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-    href: "#pricing",
-    target: "_self",
-    className: "nav-link text-smaller",
-    rel: "noopener"
-  }, "Pricing")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
-    className: "nav-item menu-item"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-    href: "#contactSales",
-    target: "_self",
-    class: "nav-link text-smaller nav-link--external",
-    rel: "noopener"
-  }, "Demo")))))))))));
+  }, "Features")))))))))));
 }
 
 /***/ }),
@@ -249,6 +341,16 @@ module.exports = window["wp"]["blockEditor"];
 /***/ ((module) => {
 
 module.exports = window["wp"]["blocks"];
+
+/***/ }),
+
+/***/ "@wordpress/components":
+/*!************************************!*\
+  !*** external ["wp","components"] ***!
+  \************************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["components"];
 
 /***/ }),
 

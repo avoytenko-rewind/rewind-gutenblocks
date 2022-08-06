@@ -26,13 +26,25 @@ import metadata from './block.json';
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
-registerBlockType( metadata.name, {
+registerBlockType(metadata.name, {
 	/**
 	 * @see ./edit.js
 	 */
+	attributes: {
+		heading: {
+			type: 'string',
+			source: 'html',
+			selector: 'h4',
+			default: 'Quick Links:'
+		},
+		links: {
+			type: 'object',
+			default: {}
+		},
+	},
 	edit: Edit,
 	/**
 	 * @see ./save.js
 	 */
 	save,
-} );
+});
