@@ -24,9 +24,26 @@
 function create_rewind_blocks()
 {
 	register_block_type(__DIR__ . '/build/quick-links');
-	register_block_type(__DIR__ . '/build/trusted-logos');
-
+	register_block_type(__DIR__ . '/build/trusted-logos', array(
+		'render_callback' => function ($attributes) {
+			return get_dynamic_block($attributes, 'trusted-logos');
+		}
+	));
 }
 
 add_action('init', 'create_rewind_blocks');
 
+function get_dynamic_block(array $attributes, string $name): string
+{
+	$html = '';
+
+	ob_start();
+
+	include_once __DIR__ . '/dynamic-blocks/' . $name . '-frontend.php';
+
+	$html = ob_get_contents();
+
+	ob_end_clean();
+
+	return $html;
+}

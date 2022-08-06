@@ -32,9 +32,16 @@ registerBlockType(metadata.name, {
 	 */
 	attributes: {
 		images: {
-			type: 'object',
-			default: {}
+			type: 'array',
+			default: []
 		},
+		imageIDs: {
+			type: 'array'
+		},
+		title: {
+			type: 'string',
+			default: 'Trusted by [rewind-number-orgs]+ organizations'
+		}
 	},
 	edit: Edit,
 	/**

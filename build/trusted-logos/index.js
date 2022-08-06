@@ -2,15 +2,15 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/components/ImageUpload.js":
-/*!***************************************!*\
-  !*** ./src/components/ImageUpload.js ***!
-  \***************************************/
+/***/ "./src/components/GalleryUpload.js":
+/*!*****************************************!*\
+  !*** ./src/components/GalleryUpload.js ***!
+  \*****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ ImageUpload)
+/* harmony export */   "default": () => (/* binding */ GalleryUpload)
 /* harmony export */ });
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
@@ -25,21 +25,23 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const ALLOWED_MEDIA_TYPES = ['image'];
-function ImageUpload(_ref) {
+function GalleryUpload(_ref) {
   let {
-    onLogoUpdate,
-    logo
+    onImageUpdate,
+    images
   } = _ref;
-  console.log(logo);
-  const instructions = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('To edit the background image, you need permission to upload media.', 'rewind-theme')); // return <p>Logo</p>
-
+  const instructions = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('To edit the background image, you need permission to upload media.', 'rewind-theme'));
+  const logoIDs = images.map(img => img.id);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.MediaUploadCheck, {
     fallback: instructions
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.MediaUpload, {
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Logo', 'rewind-theme'),
-    onSelect: () => onLogoUpdate(logo.id),
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Logos', 'rewind-theme'),
+    onSelect: img => onImageUpdate(img),
+    value: logoIDs,
     allowedTypes: ALLOWED_MEDIA_TYPES,
-    value: logo.imgID,
+    multiple: true,
+    gallery: true,
+    addToGallery: true,
     render: _ref2 => {
       let {
         open
@@ -47,7 +49,7 @@ function ImageUpload(_ref) {
       return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
         className: 'editor-post-featured-image__toggle',
         onClick: open
-      }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Add Logo', 'rewind-theme'));
+      }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Add/Replace Images...', 'rewind-theme'));
     }
   })));
 }
@@ -70,7 +72,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _components_ImageUpload__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/ImageUpload */ "./src/components/ImageUpload.js");
+/* harmony import */ var _components_GalleryUpload__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/GalleryUpload */ "./src/components/GalleryUpload.js");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./editor.scss */ "./src/trusted-logos/editor.scss");
@@ -115,59 +117,113 @@ function Edit(_ref) {
     setAttributes
   } = _ref;
   const {
-    images
+    images,
+    imageIDs
   } = attributes;
   const imageKeys = Object.keys(images);
 
-  function addNewImage() {
-    const countKeys = imageKeys.length + 1;
-    const newImages = { ...images,
-      [countKeys]: {
-        id: countKeys,
-        imgID: '',
-        imgSRC: ''
-      }
-    };
+  function setImage(img) {
     setAttributes({
-      images: newImages
+      images: img
     });
   }
 
-  function deleteImage(key) {
-    const newImages = { ...images
-    };
-    delete newImages[key];
+  function clearImages() {
     setAttributes({
-      images: newImages
+      images: []
     });
   }
 
-  function setImage(key) {}
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.useBlockProps)({
+    className: 'rw-block--fw'
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "box-item p-3 text-center"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
+    className: "mt-0 has-custom-font-size has-normal-font-size text-center",
+    tagName: "h4" // The tag here is the element output and editable in the admin
+    ,
+    value: attributes.title // Any existing content, either from the database or an attribute default
+    ,
+    allowedFormats: ['core/bold', 'core/italic'] // Allow the content to be made bold or italic, but do not allow other formatting options
+    ,
+    onChange: title => setAttributes({
+      title
+    }) // Store updated content as a block attribute
+    ,
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Title...') // Display this text before any content has been added by the user
 
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.useBlockProps)(), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "repeatable-els flex-wrap"
-  }, imageKeys.length > 0 && imageKeys.map(key => {
-    const currentImage = images[key];
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      key: currentImage.id,
-      className: "mx-1 box-item"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_ImageUpload__WEBPACK_IMPORTED_MODULE_3__["default"], {
-      logo: currentImage,
-      onLogoUpdate: setImage
-    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
-      onClick: () => deleteImage(currentImage.id),
-      isDestructive: true,
-      variant: "link"
-    }, "Delete"));
   }), !imageKeys.length && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     className: "has-small-font-size text-center"
-  }, "Start adding elements.."), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
-    onClick: addNewImage,
-    variant: "secondary"
-  }, "Add Image ", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Icon, {
-    icon: "plus"
-  }))));
-}
+  }, "Start adding elements.."), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_GalleryUpload__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    onImageUpdate: setImage,
+    images: images
+  }), images.length > 0 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "repeatable-els"
+  }, Object.keys(images).map(imageKey => {
+    const currentImage = images[imageKey];
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      class: "box-item--image mx-2",
+      key: imageKey
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+      width: "150px",
+      src: currentImage.url
+    }));
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+    onClick: clearImages,
+    isDestructive: true,
+    variant: "link"
+  }, "Clear All Images"))));
+} // export default function Edit({ attributes, setAttributes }) {
+// 	const { images } = attributes;
+// 	const imageKeys = Object.keys(images);
+// 	function addNewImage() {
+// 		const countKeys = imageKeys.length + 1;
+// 		const newImages = { ...images, [countKeys]: { id: countKeys, imgID: '', imgSRC: '' } };
+// 		setAttributes({
+// 			images: newImages
+// 		})
+// 	}
+// 	function deleteImage(key) {
+// 		const newImages = { ...images };
+// 		delete newImages[key];
+// 		setAttributes({
+// 			images: newImages
+// 		})
+// 	}
+// 	function setImage(key, img) {
+// 		const newImages = { ...images }
+// 		console.log(key)
+// 		newImages[key].imgSRC = img.url;
+// 		setAttributes({
+// 			images: newImages
+// 		})
+// 	}
+// 	return (
+// 		<div {...useBlockProps()}>
+// 			<RichText
+// 				className="mt-0 mb-0 has-custom-font-size has-normal-font-size text-center"
+// 				tagName="h4" // The tag here is the element output and editable in the admin
+// 				value={attributes.title} // Any existing content, either from the database or an attribute default
+// 				allowedFormats={['core/bold', 'core/italic']} // Allow the content to be made bold or italic, but do not allow other formatting options
+// 				onChange={(title) => setAttributes({ title })} // Store updated content as a block attribute
+// 				placeholder={__('Title...')} // Display this text before any content has been added by the user
+// 			/>
+// 			<div className="repeatable-els flex-wrap">
+// 				{imageKeys.length > 0 && imageKeys.map((key) => {
+// 					const currentImage = images[key];
+// 					return (<div key={currentImage.id} className="mx-1 box-item">
+// 						<ImageUpload logo={currentImage} onLogoUpdate={setImage} />
+// 						<Button onClick={() => deleteImage(currentImage.id)} isDestructive variant="link">
+// 							Delete
+// 						</Button>
+// 					</div>);
+// 				})}
+// 				{!imageKeys.length && <p className="has-small-font-size text-center">Start adding elements..</p>}
+// 				<Button onClick={addNewImage} variant="secondary">Add Image <Icon icon="plus" /></Button>
+// 			</div>
+// 		</div>
+// 	);
+// }
 
 /***/ }),
 
@@ -218,8 +274,15 @@ __webpack_require__.r(__webpack_exports__);
    */
   attributes: {
     images: {
-      type: 'object',
-      default: {}
+      type: 'array',
+      default: []
+    },
+    imageIDs: {
+      type: 'array'
+    },
+    title: {
+      type: 'string',
+      default: 'Trusted by [rewind-number-orgs]+ organizations'
     }
   },
   edit: _edit__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -278,7 +341,7 @@ function save(_ref) {
   let {
     attributes
   } = _ref;
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps.save(), "trusted by logos");
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null);
 }
 
 /***/ }),

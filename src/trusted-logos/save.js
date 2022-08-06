@@ -22,11 +22,8 @@ import { useBlockProps } from '@wordpress/block-editor';
  *
  * @return {WPElement} Element to render.
  */
-export default function save({attributes}) {
-
+export default function save({ attributes }) {
 	return (
-		<section {...useBlockProps.save()}>
-			trusted by logos
-		</section>
+		<></>
 	);
 }
