@@ -1,0 +1,31 @@
+/**
+ * The following styles get applied inside the editor only.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.wp-block-create-block- {
+	border: 1px dotted #f00;
+}
+
+.box-item{
+	border: 1px dashed grey;
+	padding: 5px;
+	border-radius: 8px;
+
+	&--image{
+		max-width: 150px;
+	}
+}
+
+.repeatable-els{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 5px 0px;
+}
+
+.flex-wrap{
+	flex-wrap: wrap;
+}
+

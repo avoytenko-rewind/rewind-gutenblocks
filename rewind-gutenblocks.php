@@ -24,6 +24,7 @@
 function create_rewind_blocks()
 {
 	register_block_type(__DIR__ . '/build/quick-links');
+	register_block_type(__DIR__ . '/build/trusted-logos');
 
 }
 
