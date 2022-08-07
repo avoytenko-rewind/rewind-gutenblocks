@@ -37,7 +37,7 @@ registerBlockType(metadata.name, {
 		},
 		title: {
 			type: 'string',
-			default: 'Trusted by [rewind-number-orgs]+ organizations'
+			default: 'Trusted by over 100,000 organizations across the globe.'
 		},
 		isCustom: {
 			type: 'boolean',
