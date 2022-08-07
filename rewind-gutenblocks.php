@@ -24,16 +24,25 @@
 function create_rewind_blocks()
 {
 	register_block_type(__DIR__ . '/build/quick-links');
-
+	
 	register_block_type(__DIR__ . '/build/trusted-logos', array(
 		'render_callback' => function ($attributes) {
 			return get_dynamic_block($attributes, 'trusted-logos');
 		}
 	));
+
+	register_block_type(__DIR__ . '/build/image-and-text');
 }
 
 add_action('init', 'create_rewind_blocks');
 
+/**
+ * A utility to get a php file for a block
+ *
+ * @param  array $attributes
+ * @param  string $name
+ * @return string
+ */
 function get_dynamic_block(array $attributes, string $name): string
 {
 	$html = '';
@@ -49,9 +58,12 @@ function get_dynamic_block(array $attributes, string $name): string
 	return $html;
 }
 
-
-add_action('wp_ajax_rw_header_trust_logos', 'rw_header_trust_logos');
-
+/**
+ * An api endpoint/function for getting default logos
+ *
+ * @param  bool $return
+ * @return array|void
+ */
 function rw_header_trust_logos(bool $return = false)
 {
 	$client_logos_title = !empty(get_field('header_banner_logo_title', 'option')) ? get_field('header_banner_logo_title', 'option') : '';
@@ -76,3 +88,5 @@ function rw_header_trust_logos(bool $return = false)
 		return $res;
 	}
 }
+
+add_action('wp_ajax_rw_header_trust_logos', 'rw_header_trust_logos');

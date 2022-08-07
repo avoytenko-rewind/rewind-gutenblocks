@@ -5,7 +5,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Button, ToggleControl, PanelBody } from '@wordpress/components';
-import GalleryUpload from '../components/GalleryUpload';
+import GalleryUpload from '../UI/GalleryUpload';
 import apiFetch from '@wordpress/api-fetch';
 import { useEffect, RawHTML } from "@wordpress/element";
 

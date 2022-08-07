@@ -1,6 +1,6 @@
 <?php
-$title  = $attributes['title'] ?? 'ss';
-$images = $attributes['images'] ?? array();
+$title  = !empty($attributes['title']) ? $attributes['title'] : '';
+$images = !empty($attributes['images']) ? $attributes['images'] : array();
 $is_custom = isset($attributes['isCustom']) ? $attributes['isCustom'] : false;
 
 if (!$is_custom) {
@@ -19,7 +19,7 @@ if (!$is_custom) {
 
             <div class="col-md-12 mb-3">
                 <div class="body-text">
-                    <p><?php echo $title; ?></p>
+                    <p><?php echo do_shortcode($title); ?></p>
                 </div>
             </div>
 
