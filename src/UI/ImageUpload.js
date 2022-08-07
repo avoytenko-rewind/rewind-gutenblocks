@@ -1,32 +1,48 @@
-import { __ } from '@wordpress/i18n';
-import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { Button } from '@wordpress/components';
+import { __ } from "@wordpress/i18n";
+import { MediaUpload, MediaUploadCheck } from "@wordpress/block-editor";
+import { Button } from "@wordpress/components";
 
-const ALLOWED_MEDIA_TYPES = ['image'];
+const ALLOWED_MEDIA_TYPES = ["image"];
 
-export default function ImageUpload({ onImageUpdate, images }) {
-    
-    const instructions = <p>{__('To edit the background image, you need permission to upload media.', 'rewind-theme')}</p>;
-    const logoIDs = images.map((img) => img.id);
+export default function ImageUpload({
+	onImageUpdate,
+	imgID,
+	className = "",
+	newImage,
+}) {
+	const instructions = (
+		<p>
+			{__(
+				"To edit the background image, you need permission to upload media.",
+				"rewind-theme"
+			)}
+		</p>
+	);
 
-    return <>
-        <MediaUploadCheck fallback={instructions}>
-            <MediaUpload
-                title={__('Logos', 'rewind-theme')}
-                onSelect={(img) => onImageUpdate(img)}
-                value={logoIDs}
-                allowedTypes={ALLOWED_MEDIA_TYPES}
-                multiple={true}
-                gallery={true}
-                addToGallery={true}
-                render={({ open }) => (
-                    <Button
-                        className={'editor-post-featured-image__toggle'}
-                        onClick={open}>
-                        {__('Add/Replace Images...', 'rewind-theme')}
-                    </Button>
-                )}
-            />
-        </MediaUploadCheck>
-    </>
+	let buttonText = __("Add Image...", "rewind-gutenblocks");
+	let buttonClass = "editor-post-featured-image__toggle";
+
+	if (!newImage) {
+		buttonText = __("Replace Image...", "rewind-gutenblocks");
+		buttonClass = "";
+	}
+
+	return (
+		<div className={className}>
+			<MediaUploadCheck fallback={instructions}>
+				<MediaUpload
+					title={__("Logos", "rewind-theme")}
+					onSelect={(img) => onImageUpdate(img)}
+					value={imgID}
+					allowedTypes={ALLOWED_MEDIA_TYPES}
+					multiple={false}
+					render={({ open }) => (
+						<Button className={buttonClass} variant="secondary" onClick={open}>
+							{buttonText}
+						</Button>
+					)}
+				/>
+			</MediaUploadCheck>
+		</div>
+	);
 }

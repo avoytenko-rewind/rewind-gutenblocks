@@ -276,7 +276,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     title: {
       type: 'string',
-      default: 'Trusted by [rewind-number-orgs]+ organizations'
+      default: 'Trusted by over 100,000 organizations across the globe.'
     },
     isCustom: {
       type: 'boolean',

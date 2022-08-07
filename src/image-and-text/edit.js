@@ -1,49 +1,91 @@
-/**
- * Retrieves the translation of text.
- *
- * @see https://developer.wordpress.org/block-editor/packages/packages-i18n/
- */
 import { __ } from "@wordpress/i18n";
-// import { Button, } from '@wordpress/components';
-
-/**
- * React hook that is used to mark the block wrapper element.
- * It provides all the necessary props like the class name.
- *
- * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
- */
+import { PanelBody, SelectControl, ToggleControl } from "@wordpress/components";
+import ImageUpload from "../UI/ImageUpload";
 import {
 	useBlockProps,
-	InnerBlocks
+	InnerBlocks,
+	InspectorControls,
 } from "@wordpress/block-editor";
 
-/**
- * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
- * Those files can contain any CSS code that gets applied to the editor.
- *
- * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
- */
+import { verticalAlignmentClass } from "../utilities";
+
 import "./editor.scss";
 
-/**
- * The edit function describes the structure of your block in the context of the
- * editor. This represents what the editor will render when the block is used.
- *
- * @see https://developer.wordpress.org/block-editor/developers/block-api/block-edit-save/#edit
- *
- * @return {WPElement} Element to render.
- */
-export default function Edit({ attributes, setAttributes }) {
-	return <div {...useBlockProps()}>
+const MY_TEMPLATE = [
+	["core/heading", { level: 3, content: "Your Title" }],
+	["core/paragraph", { content: "Your text here" }],
+];
 
-		<div className="wp-block-columns is-style-rewind-cols">
-			<div className="wp-block">
-				Image goes here
-			</div>
-			<div className="wp-block">
-				<InnerBlocks/>
+export default function Edit({ attributes, setAttributes }) {
+	const { image, alignmentImage, alignmentText, imageLeft } = attributes;
+
+	return (
+		<div {...useBlockProps({ className: "box-item px-3" })}>
+			<InspectorControls>
+				<PanelBody>
+					<SelectControl
+						label="Image Alignment"
+						value={alignmentImage}
+						options={[
+							{ label: "Top", value: "top" },
+							{ label: "Center", value: "center" },
+							{ label: "Bottom", value: "bottom" },
+						]}
+						onChange={(align) => setAttributes({ alignmentImage: align })}
+					/>
+
+					<SelectControl
+						label="Text Alignment"
+						value={alignmentText}
+						options={[
+							{ label: "Top", value: "top" },
+							{ label: "Center", value: "center" },
+							{ label: "Bottom", value: "bottom" },
+						]}
+						onChange={(align) => setAttributes({ alignmentText: align })}
+					/>
+
+					<ToggleControl
+						label="Image on the left?"
+						help={imageLeft ? "Image on the left" : "Image on the right"}
+						checked={imageLeft}
+						onChange={() => {
+							setAttributes({ imageLeft: !imageLeft });
+						}}
+					/>
+
+				</PanelBody>
+			</InspectorControls>
+
+			<div
+				className="wp-block-columns is-style-rewind-cols row-cols-lg-2"
+				style={{ "flex-direction": imageLeft ? "row-reverse" : "row" }}
+			>
+				<div
+					className={
+						"wp-block wp-block-column " + verticalAlignmentClass(alignmentText)
+					}
+				>
+					<InnerBlocks template={MY_TEMPLATE} />
+				</div>
+				<div
+					className={
+						"wp-block p-3 wp-block-column " +
+						verticalAlignmentClass(alignmentImage)
+					}
+				>
+					<div className="box-item text-center">
+						{image?.url && <img src={image.url} />}
+						<ImageUpload
+							onImageUpdate={(image) =>
+								setAttributes({ image: { id: image.id, url: image.url } })
+							}
+							newImage={!image?.url}
+							image={image?.id}
+						/>
+					</div>
+				</div>
 			</div>
 		</div>
-
-	</div>;
+	);
 }

@@ -2,6 +2,72 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/UI/ImageUpload.js":
+/*!*******************************!*\
+  !*** ./src/UI/ImageUpload.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ImageUpload)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
+
+
+
+
+const ALLOWED_MEDIA_TYPES = ["image"];
+function ImageUpload(_ref) {
+  let {
+    onImageUpdate,
+    imgID,
+    className = "",
+    newImage
+  } = _ref;
+  const instructions = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("To edit the background image, you need permission to upload media.", "rewind-theme"));
+
+  let buttonText = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Add Image...", "rewind-gutenblocks");
+
+  let buttonClass = "editor-post-featured-image__toggle";
+
+  if (!newImage) {
+    buttonText = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Replace Image...", "rewind-gutenblocks");
+    buttonClass = "";
+  }
+
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: className
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.MediaUploadCheck, {
+    fallback: instructions
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.MediaUpload, {
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Logos", "rewind-theme"),
+    onSelect: img => onImageUpdate(img),
+    value: imgID,
+    allowedTypes: ALLOWED_MEDIA_TYPES,
+    multiple: false,
+    render: _ref2 => {
+      let {
+        open
+      } = _ref2;
+      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
+        className: buttonClass,
+        variant: "secondary",
+        onClick: open
+      }, buttonText);
+    }
+  })));
+}
+
+/***/ }),
+
 /***/ "./src/image-and-text/edit.js":
 /*!************************************!*\
   !*** ./src/image-and-text/edit.js ***!
@@ -16,55 +82,105 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./editor.scss */ "./src/image-and-text/editor.scss");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _UI_ImageUpload__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../UI/ImageUpload */ "./src/UI/ImageUpload.js");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _utilities__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utilities */ "./src/utilities/index.js");
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./editor.scss */ "./src/image-and-text/editor.scss");
 
 
-/**
- * Retrieves the translation of text.
- *
- * @see https://developer.wordpress.org/block-editor/packages/packages-i18n/
- */
- // import { Button, } from '@wordpress/components';
-
-/**
- * React hook that is used to mark the block wrapper element.
- * It provides all the necessary props like the class name.
- *
- * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
- */
 
 
-/**
- * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
- * Those files can contain any CSS code that gets applied to the editor.
- *
- * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
- */
 
 
-/**
- * The edit function describes the structure of your block in the context of the
- * editor. This represents what the editor will render when the block is used.
- *
- * @see https://developer.wordpress.org/block-editor/developers/block-api/block-edit-save/#edit
- *
- * @return {WPElement} Element to render.
- */
 
+const MY_TEMPLATE = [["core/heading", {
+  level: 3,
+  content: "Your Title"
+}], ["core/paragraph", {
+  content: "Your text here"
+}]];
 function Edit(_ref) {
   let {
     attributes,
     setAttributes
   } = _ref;
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)(), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "wp-block-columns is-style-rewind-cols"
+  const {
+    image,
+    alignmentImage,
+    alignmentText,
+    imageLeft
+  } = attributes;
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.useBlockProps)({
+    className: "box-item px-3"
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+    label: "Image Alignment",
+    value: alignmentImage,
+    options: [{
+      label: "Top",
+      value: "top"
+    }, {
+      label: "Center",
+      value: "center"
+    }, {
+      label: "Bottom",
+      value: "bottom"
+    }],
+    onChange: align => setAttributes({
+      alignmentImage: align
+    })
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+    label: "Text Alignment",
+    value: alignmentText,
+    options: [{
+      label: "Top",
+      value: "top"
+    }, {
+      label: "Center",
+      value: "center"
+    }, {
+      label: "Bottom",
+      value: "bottom"
+    }],
+    onChange: align => setAttributes({
+      alignmentText: align
+    })
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, {
+    label: "Image on the left?",
+    help: imageLeft ? "Image on the left" : "Image on the right",
+    checked: imageLeft,
+    onChange: () => {
+      setAttributes({
+        imageLeft: !imageLeft
+      });
+    }
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "wp-block-columns is-style-rewind-cols row-cols-lg-2",
+    style: {
+      "flex-direction": imageLeft ? "row-reverse" : "row"
+    }
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "wp-block"
-  }, "Image goes here"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "wp-block"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InnerBlocks, null))));
+    className: "wp-block wp-block-column " + (0,_utilities__WEBPACK_IMPORTED_MODULE_5__.verticalAlignmentClass)(alignmentText)
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.InnerBlocks, {
+    template: MY_TEMPLATE
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "wp-block p-3 wp-block-column " + (0,_utilities__WEBPACK_IMPORTED_MODULE_5__.verticalAlignmentClass)(alignmentImage)
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "box-item text-center"
+  }, (image === null || image === void 0 ? void 0 : image.url) && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    src: image.url
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_UI_ImageUpload__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    onImageUpdate: image => setAttributes({
+      image: {
+        id: image.id,
+        url: image.url
+      }
+    }),
+    newImage: !(image !== null && image !== void 0 && image.url),
+    image: image === null || image === void 0 ? void 0 : image.id
+  })))));
 }
 
 /***/ }),
@@ -111,7 +227,24 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)(_block_json__WEBPACK_IMPORTED_MODULE_4__.name, {
-  attributes: {},
+  attributes: {
+    image: {
+      type: 'object',
+      default: {}
+    },
+    alignmentImage: {
+      type: 'string',
+      default: 'top'
+    },
+    alignmentText: {
+      type: 'string',
+      default: 'top'
+    },
+    imageLeft: {
+      type: 'boolean',
+      default: true
+    }
+  },
 
   /**
    * @see ./edit.js
@@ -177,6 +310,23 @@ function save(_ref) {
 
 /***/ }),
 
+/***/ "./src/utilities/index.js":
+/*!********************************!*\
+  !*** ./src/utilities/index.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "verticalAlignmentClass": () => (/* binding */ verticalAlignmentClass)
+/* harmony export */ });
+const verticalAlignmentClass = function () {
+  let position = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'top';
+  return 'is-vertically-aligned-' + position;
+};
+
+/***/ }),
+
 /***/ "./src/image-and-text/editor.scss":
 /*!****************************************!*\
   !*** ./src/image-and-text/editor.scss ***!
@@ -218,6 +368,16 @@ module.exports = window["wp"]["blockEditor"];
 /***/ ((module) => {
 
 module.exports = window["wp"]["blocks"];
+
+/***/ }),
+
+/***/ "@wordpress/components":
+/*!************************************!*\
+  !*** external ["wp","components"] ***!
+  \************************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["components"];
 
 /***/ }),
 

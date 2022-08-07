@@ -28,7 +28,22 @@ import metadata from './block.json';
  */
 registerBlockType(metadata.name, {
 	attributes: {
-
+		image: {
+			type: 'object',
+			default: {},
+		},
+		alignmentImage: {
+			type: 'string',
+			default: 'top'
+		},
+		alignmentText: {
+			type: 'string',
+			default: 'top'
+		},
+		imageLeft: {
+			type: 'boolean',
+			default: true
+		}
 	},
 	/**
 	 * @see ./edit.js
