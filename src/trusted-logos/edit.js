@@ -4,8 +4,11 @@
  * @see https://developer.wordpress.org/block-editor/packages/packages-i18n/
  */
 import { __ } from '@wordpress/i18n';
-import { Button } from '@wordpress/components';
+import { Button, ToggleControl, PanelBody } from '@wordpress/components';
 import GalleryUpload from '../components/GalleryUpload';
+import apiFetch from '@wordpress/api-fetch';
+import { useEffect, RawHTML } from "@wordpress/element";
+
 
 
 /**
@@ -14,7 +17,7 @@ import GalleryUpload from '../components/GalleryUpload';
  *
  * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
  */
-import { useBlockProps, RichText } from '@wordpress/block-editor';
+import { useBlockProps, RichText, InspectorControls } from '@wordpress/block-editor';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -33,12 +36,11 @@ import './editor.scss';
  * @return {WPElement} Element to render.
  */
 export default function Edit({ attributes, setAttributes }) {
-	const { images, imageIDs } = attributes;
+	const { images, isCustom, defaultLogos } = attributes;
 	const imageKeys = Object.keys(images);
 
 
 	function setImage(img) {
-
 		setAttributes({
 			images: img,
 		})
@@ -50,111 +52,96 @@ export default function Edit({ attributes, setAttributes }) {
 		})
 	}
 
-	return (
-		<div {...useBlockProps({ className: 'rw-block--fw' })}>
-			<div className="box-item p-3 text-center">
-				<RichText
-					className="mt-0 has-custom-font-size has-normal-font-size text-center"
-					tagName="h4" // The tag here is the element output and editable in the admin
-					value={attributes.title} // Any existing content, either from the database or an attribute default
-					allowedFormats={['core/bold', 'core/italic']} // Allow the content to be made bold or italic, but do not allow other formatting options
-					onChange={(title) => setAttributes({ title })} // Store updated content as a block attribute
-					placeholder={__('Title...')} // Display this text before any content has been added by the user
-				/>
-
-				{!imageKeys.length && <p className="has-small-font-size text-center">Start adding elements..</p>}
-
-				<GalleryUpload onImageUpdate={setImage} images={images} />
+	useEffect(() => {
+		if (!isCustom) {
+			apiFetch({ url: ajaxurl + '?action=rw_header_trust_logos' }).then((data) => {
+				setAttributes({ defaultLogos: data })
+			});
+		}
+	}, []);
 
 
-				{images.length > 0 && <>
+	function GlobalLogos() {
 
-					<div className="repeatable-els">
-						{Object.keys(images).map((imageKey) => {
-							const currentImage = images[imageKey]
-							return <div class="box-item--image mx-2" key={imageKey}>
-								<img width="150px" src={currentImage.url} />
-							</div>
-						})}
-					</div>
+		if (!defaultLogos?.title && !defaultLogos?.logos) {
+			return <p>Loading...</p>
+		}
 
-					<Button onClick={clearImages} isDestructive variant="link">
-						Clear All Images
-					</Button>
-				</>}
+		return <div className="box-item p-3 text-center">
+			<h4 className="mt-0 has-custom-font-size has-normal-font-size text-center">{defaultLogos.title}</h4>
 
 
-			</div>
+			{defaultLogos?.logos?.length > 0 && <>
+				<div className="repeatable-els">
+					{defaultLogos.logos.map((logo) => {
+						return <div class="box-item--image mx-2" key={logo}>
+							<RawHTML>{logo}</RawHTML>
+						</div>
+					})}
+				</div>
+			</>}
+
 
 		</div>
+	}
+
+	return (
+		<>
+			<InspectorControls>
+				<PanelBody>
+					<ToggleControl
+						label="Use Custom Images"
+						help={
+							isCustom
+								? 'Use custom images.'
+								: 'Use default images.'
+						}
+						checked={isCustom}
+						onChange={() => {
+							setAttributes({ isCustom: !isCustom });
+						}}
+					/>
+				</PanelBody>
+			</InspectorControls>
+
+			<div {...useBlockProps({ className: 'rw-block--fw' })}>
+				{isCustom && <div className="box-item p-3 text-center">
+					<RichText
+						className="mt-0 has-custom-font-size has-normal-font-size text-center"
+						tagName="h4" // The tag here is the element output and editable in the admin
+						value={attributes.title} // Any existing content, either from the database or an attribute default
+						allowedFormats={['core/bold', 'core/italic']} // Allow the content to be made bold or italic, but do not allow other formatting options
+						onChange={(title) => setAttributes({ title })} // Store updated content as a block attribute
+						placeholder={__('Title...')} // Display this text before any content has been added by the user
+					/>
+
+					{!imageKeys.length && <p className="has-small-font-size text-center">Start adding elements..</p>}
+
+					<GalleryUpload onImageUpdate={setImage} images={images} />
+
+
+					{images.length > 0 && <>
+
+						<div className="repeatable-els">
+							{Object.keys(images).map((imageKey) => {
+								const currentImage = images[imageKey]
+								return <div class="box-item--image mx-2" key={imageKey}>
+									<img width="150px" src={currentImage.url} />
+								</div>
+							})}
+						</div>
+
+						<Button onClick={clearImages} isDestructive variant="link">
+							Clear All Images
+						</Button>
+					</>}
+
+
+				</div>}
+
+				{!isCustom && <GlobalLogos />}
+
+			</div>
+		</>
 	);
 }
-// export default function Edit({ attributes, setAttributes }) {
-// 	const { images } = attributes;
-// 	const imageKeys = Object.keys(images);
-
-// 	function addNewImage() {
-// 		const countKeys = imageKeys.length + 1;
-
-// 		const newImages = { ...images, [countKeys]: { id: countKeys, imgID: '', imgSRC: '' } };
-
-// 		setAttributes({
-// 			images: newImages
-// 		})
-// 	}
-
-// 	function deleteImage(key) {
-
-// 		const newImages = { ...images };
-
-// 		delete newImages[key];
-
-// 		setAttributes({
-// 			images: newImages
-// 		})
-// 	}
-
-// 	function setImage(key, img) {
-// 		const newImages = { ...images }
-
-// 		console.log(key)
-// 		newImages[key].imgSRC = img.url;
-
-// 		setAttributes({
-// 			images: newImages
-// 		})
-// 	}
-
-// 	return (
-// 		<div {...useBlockProps()}>
-// 			<RichText
-// 				className="mt-0 mb-0 has-custom-font-size has-normal-font-size text-center"
-// 				tagName="h4" // The tag here is the element output and editable in the admin
-// 				value={attributes.title} // Any existing content, either from the database or an attribute default
-// 				allowedFormats={['core/bold', 'core/italic']} // Allow the content to be made bold or italic, but do not allow other formatting options
-// 				onChange={(title) => setAttributes({ title })} // Store updated content as a block attribute
-// 				placeholder={__('Title...')} // Display this text before any content has been added by the user
-// 			/>
-// 			<div className="repeatable-els flex-wrap">
-
-// 				{imageKeys.length > 0 && imageKeys.map((key) => {
-// 					const currentImage = images[key];
-
-// 					return (<div key={currentImage.id} className="mx-1 box-item">
-
-// 						<ImageUpload logo={currentImage} onLogoUpdate={setImage} />
-
-// 						<Button onClick={() => deleteImage(currentImage.id)} isDestructive variant="link">
-// 							Delete
-// 						</Button>
-// 					</div>);
-
-// 				})}
-
-// 				{!imageKeys.length && <p className="has-small-font-size text-center">Start adding elements..</p>}
-
-// 				<Button onClick={addNewImage} variant="secondary">Add Image <Icon icon="plus" /></Button>
-// 			</div>
-// 		</div>
-// 	);
-// }

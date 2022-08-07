@@ -35,13 +35,16 @@ registerBlockType(metadata.name, {
 			type: 'array',
 			default: []
 		},
-		imageIDs: {
-			type: 'array'
-		},
 		title: {
 			type: 'string',
 			default: 'Trusted by [rewind-number-orgs]+ organizations'
-		}
+		},
+		isCustom: {
+			type: 'boolean',
+			default: false
+		},
+		defaultLogos: {}
+
 	},
 	edit: Edit,
 	/**

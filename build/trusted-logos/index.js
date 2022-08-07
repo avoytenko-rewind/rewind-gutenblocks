@@ -73,9 +73,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _components_GalleryUpload__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/GalleryUpload */ "./src/components/GalleryUpload.js");
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./editor.scss */ "./src/trusted-logos/editor.scss");
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/api-fetch */ "@wordpress/api-fetch");
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./editor.scss */ "./src/trusted-logos/editor.scss");
 
 
 /**
@@ -83,6 +85,8 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @see https://developer.wordpress.org/block-editor/packages/packages-i18n/
  */
+
+
 
 
 
@@ -118,7 +122,8 @@ function Edit(_ref) {
   } = _ref;
   const {
     images,
-    imageIDs
+    isCustom,
+    defaultLogos
   } = attributes;
   const imageKeys = Object.keys(images);
 
@@ -134,11 +139,53 @@ function Edit(_ref) {
     });
   }
 
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.useBlockProps)({
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (!isCustom) {
+      _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4___default()({
+        url: ajaxurl + '?action=rw_header_trust_logos'
+      }).then(data => {
+        setAttributes({
+          defaultLogos: data
+        });
+      });
+    }
+  }, []);
+
+  function GlobalLogos() {
+    var _defaultLogos$logos;
+
+    if (!(defaultLogos !== null && defaultLogos !== void 0 && defaultLogos.title) && !(defaultLogos !== null && defaultLogos !== void 0 && defaultLogos.logos)) {
+      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Loading...");
+    }
+
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "box-item p-3 text-center"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+      className: "mt-0 has-custom-font-size has-normal-font-size text-center"
+    }, defaultLogos.title), (defaultLogos === null || defaultLogos === void 0 ? void 0 : (_defaultLogos$logos = defaultLogos.logos) === null || _defaultLogos$logos === void 0 ? void 0 : _defaultLogos$logos.length) > 0 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "repeatable-els"
+    }, defaultLogos.logos.map(logo => {
+      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+        class: "box-item--image mx-2",
+        key: logo
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.RawHTML, null, logo));
+    }))));
+  }
+
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, {
+    label: "Use Custom Images",
+    help: isCustom ? 'Use custom images.' : 'Use default images.',
+    checked: isCustom,
+    onChange: () => {
+      setAttributes({
+        isCustom: !isCustom
+      });
+    }
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.useBlockProps)({
     className: 'rw-block--fw'
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }), isCustom && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "box-item p-3 text-center"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.RichText, {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.RichText, {
     className: "mt-0 has-custom-font-size has-normal-font-size text-center",
     tagName: "h4" // The tag here is the element output and editable in the admin
     ,
@@ -172,58 +219,8 @@ function Edit(_ref) {
     onClick: clearImages,
     isDestructive: true,
     variant: "link"
-  }, "Clear All Images"))));
-} // export default function Edit({ attributes, setAttributes }) {
-// 	const { images } = attributes;
-// 	const imageKeys = Object.keys(images);
-// 	function addNewImage() {
-// 		const countKeys = imageKeys.length + 1;
-// 		const newImages = { ...images, [countKeys]: { id: countKeys, imgID: '', imgSRC: '' } };
-// 		setAttributes({
-// 			images: newImages
-// 		})
-// 	}
-// 	function deleteImage(key) {
-// 		const newImages = { ...images };
-// 		delete newImages[key];
-// 		setAttributes({
-// 			images: newImages
-// 		})
-// 	}
-// 	function setImage(key, img) {
-// 		const newImages = { ...images }
-// 		console.log(key)
-// 		newImages[key].imgSRC = img.url;
-// 		setAttributes({
-// 			images: newImages
-// 		})
-// 	}
-// 	return (
-// 		<div {...useBlockProps()}>
-// 			<RichText
-// 				className="mt-0 mb-0 has-custom-font-size has-normal-font-size text-center"
-// 				tagName="h4" // The tag here is the element output and editable in the admin
-// 				value={attributes.title} // Any existing content, either from the database or an attribute default
-// 				allowedFormats={['core/bold', 'core/italic']} // Allow the content to be made bold or italic, but do not allow other formatting options
-// 				onChange={(title) => setAttributes({ title })} // Store updated content as a block attribute
-// 				placeholder={__('Title...')} // Display this text before any content has been added by the user
-// 			/>
-// 			<div className="repeatable-els flex-wrap">
-// 				{imageKeys.length > 0 && imageKeys.map((key) => {
-// 					const currentImage = images[key];
-// 					return (<div key={currentImage.id} className="mx-1 box-item">
-// 						<ImageUpload logo={currentImage} onLogoUpdate={setImage} />
-// 						<Button onClick={() => deleteImage(currentImage.id)} isDestructive variant="link">
-// 							Delete
-// 						</Button>
-// 					</div>);
-// 				})}
-// 				{!imageKeys.length && <p className="has-small-font-size text-center">Start adding elements..</p>}
-// 				<Button onClick={addNewImage} variant="secondary">Add Image <Icon icon="plus" /></Button>
-// 			</div>
-// 		</div>
-// 	);
-// }
+  }, "Clear All Images"))), !isCustom && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(GlobalLogos, null)));
+}
 
 /***/ }),
 
@@ -277,13 +274,15 @@ __webpack_require__.r(__webpack_exports__);
       type: 'array',
       default: []
     },
-    imageIDs: {
-      type: 'array'
-    },
     title: {
       type: 'string',
       default: 'Trusted by [rewind-number-orgs]+ organizations'
-    }
+    },
+    isCustom: {
+      type: 'boolean',
+      default: false
+    },
+    defaultLogos: {}
   },
   edit: _edit__WEBPACK_IMPORTED_MODULE_2__["default"],
 
@@ -367,6 +366,16 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
+
+/***/ }),
+
+/***/ "@wordpress/api-fetch":
+/*!**********************************!*\
+  !*** external ["wp","apiFetch"] ***!
+  \**********************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["apiFetch"];
 
 /***/ }),
 

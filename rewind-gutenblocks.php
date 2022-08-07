@@ -24,6 +24,7 @@
 function create_rewind_blocks()
 {
 	register_block_type(__DIR__ . '/build/quick-links');
+
 	register_block_type(__DIR__ . '/build/trusted-logos', array(
 		'render_callback' => function ($attributes) {
 			return get_dynamic_block($attributes, 'trusted-logos');
@@ -39,11 +40,39 @@ function get_dynamic_block(array $attributes, string $name): string
 
 	ob_start();
 
-	include_once __DIR__ . '/dynamic-blocks/' . $name . '-frontend.php';
+	include __DIR__ . '/dynamic-blocks/' . $name . '-frontend.php';
 
 	$html = ob_get_contents();
 
 	ob_end_clean();
 
 	return $html;
+}
+
+
+add_action('wp_ajax_rw_header_trust_logos', 'rw_header_trust_logos');
+
+function rw_header_trust_logos(bool $return = false)
+{
+	$client_logos_title = !empty(get_field('header_banner_logo_title', 'option')) ? get_field('header_banner_logo_title', 'option') : '';
+	$client_logos = !empty(get_field('header_banner_logos', 'option')) ? get_field('header_banner_logos', 'option') : array();
+
+	$stringified_images = array();
+
+	foreach ($client_logos as $logo) {
+		array_push($stringified_images, wp_get_attachment_image($logo, 'medium', false, array('class' => 'img-fluid')));
+	}
+
+	$res = array(
+		'title' 		=> $client_logos_title,
+		'logos' 		=> $stringified_images,
+		'logo_ids' 		=> $client_logos,
+	);
+
+	if (!$return) {
+		wp_send_json($res);
+		wp_die();
+	}else{
+		return $res;
+	}
 }
