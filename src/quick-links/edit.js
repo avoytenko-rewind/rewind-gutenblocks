@@ -69,12 +69,10 @@ export default function Edit({ attributes, setAttributes }) {
 		})
 	}
 
-	
-
 
 	return (
-		<div {...useBlockProps()}>
-			<div style={{display : "flex", "align-items" : "center", padding: "5px 0px"}}>
+		<div {...useBlockProps({ className: "box-item" })}>
+			<div style={{ display: "flex", "align-items": "center", padding: "5px 0px" }}>
 				<RichText
 					className="mt-0 mb-0 has-custom-font-size has-normal-font-size"
 					tagName="h4" // The tag here is the element output and editable in the admin
@@ -88,7 +86,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 					const currentLink = links[currentKey];
 					return (
-						<div className="mx-1" style={{ border: "1px dashed", padding: "5px", "border-radius": "4px", display: "flex", "align-items" : "center" }}>
+						<div className="mx-1" style={{ border: "1px dashed", padding: "5px", "border-radius": "4px", display: "flex", "align-items": "center" }}>
 							<RichText
 								key={currentLink.id}
 								className="has-custom-font-size has-normal-font-size"

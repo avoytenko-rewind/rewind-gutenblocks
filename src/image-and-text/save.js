@@ -20,7 +20,7 @@ export default function save({ attributes }) {
 	return (
 		<div {...props}>
 			<div className="container">
-				<div className={"row row-cols-lg-2" + directionClass}>
+				<div className={"row row-cols-1 row-cols-lg-2" + directionClass}>
 					<div className={"col " + verticalAlignmentClass(alignmentText, true)}>
 						<InnerBlocks.Content />
 					</div>
