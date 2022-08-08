@@ -24,7 +24,7 @@
 function create_rewind_blocks()
 {
 	register_block_type(__DIR__ . '/build/quick-links');
-	
+
 	register_block_type(__DIR__ . '/build/trusted-logos', array(
 		'render_callback' => function ($attributes) {
 			return get_dynamic_block($attributes, 'trusted-logos');
@@ -43,7 +43,7 @@ add_action('init', 'create_rewind_blocks');
  * @param  string $name
  * @return string
  */
-function get_dynamic_block(array $attributes, string $name): string
+function get_dynamic_block(array $attributes, string $name, string $content = ''): string
 {
 	$html = '';
 
@@ -84,7 +84,7 @@ function rw_header_trust_logos(bool $return = false)
 	if (!$return) {
 		wp_send_json($res);
 		wp_die();
-	}else{
+	} else {
 		return $res;
 	}
 }

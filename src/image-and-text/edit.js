@@ -1,5 +1,5 @@
 import { __ } from "@wordpress/i18n";
-import { PanelBody, SelectControl, ToggleControl } from "@wordpress/components";
+import { PanelBody, SelectControl, ToggleControl, TextControl } from "@wordpress/components";
 import ImageUpload from "../UI/ImageUpload";
 import {
 	useBlockProps,
@@ -17,7 +17,7 @@ const MY_TEMPLATE = [
 ];
 
 export default function Edit({ attributes, setAttributes }) {
-	const { image, alignmentImage, alignmentText, imageLeft } = attributes;
+	const { image, alignmentImage, alignmentText, imageLeft, imageStyle, imageLink } = attributes;
 
 	return (
 		<div {...useBlockProps({ className: "box-item px-3" })}>
@@ -54,6 +54,22 @@ export default function Edit({ attributes, setAttributes }) {
 						}}
 					/>
 
+					<SelectControl
+						label="Image Style"
+						value={imageStyle}
+						options={[
+							{ label: "Default", value: "" },
+							{ label: "Rounded", value: "is-style-rounded-corners" },
+							{ label: "Rounded With Shadow", value: "is-style-rounded-corners is-style-w-shadow" },
+						]}
+						onChange={(style) => setAttributes({ imageStyle: style })}
+					/>
+
+					<TextControl
+						label="Link on the image"
+						value={imageLink}
+						onChange={(link) => setAttributes({ imageLink: link })}
+					/>
 				</PanelBody>
 			</InspectorControls>
 
@@ -75,11 +91,9 @@ export default function Edit({ attributes, setAttributes }) {
 					}
 				>
 					<div className="box-item text-center">
-						{image?.url && <img src={image.url} />}
+						{image?.url && <div class={'wp-block-image ' + imageStyle}><img src={image.url} /></div>}
 						<ImageUpload
-							onImageUpdate={(image) =>
-								setAttributes({ image: { id: image.id, url: image.url } })
-							}
+							onImageUpdate={(image) => setAttributes({ image })}
 							newImage={!image?.url}
 							image={image?.id}
 						/>

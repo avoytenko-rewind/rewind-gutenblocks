@@ -111,7 +111,9 @@ function Edit(_ref) {
     image,
     alignmentImage,
     alignmentText,
-    imageLeft
+    imageLeft,
+    imageStyle,
+    imageLink
   } = attributes;
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.useBlockProps)({
     className: "box-item px-3"
@@ -156,6 +158,28 @@ function Edit(_ref) {
         imageLeft: !imageLeft
       });
     }
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+    label: "Image Style",
+    value: imageStyle,
+    options: [{
+      label: "Default",
+      value: ""
+    }, {
+      label: "Rounded",
+      value: "is-style-rounded-corners"
+    }, {
+      label: "Rounded With Shadow",
+      value: "is-style-rounded-corners is-style-w-shadow"
+    }],
+    onChange: style => setAttributes({
+      imageStyle: style
+    })
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
+    label: "Link on the image",
+    value: imageLink,
+    onChange: link => setAttributes({
+      imageLink: link
+    })
   }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "wp-block-columns is-style-rewind-cols row-cols-lg-2",
     style: {
@@ -169,14 +193,13 @@ function Edit(_ref) {
     className: "wp-block p-3 wp-block-column " + (0,_utilities__WEBPACK_IMPORTED_MODULE_5__.verticalAlignmentClass)(alignmentImage)
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "box-item text-center"
-  }, (image === null || image === void 0 ? void 0 : image.url) && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+  }, (image === null || image === void 0 ? void 0 : image.url) && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    class: 'wp-block-image ' + imageStyle
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
     src: image.url
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_UI_ImageUpload__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_UI_ImageUpload__WEBPACK_IMPORTED_MODULE_3__["default"], {
     onImageUpdate: image => setAttributes({
-      image: {
-        id: image.id,
-        url: image.url
-      }
+      image
     }),
     newImage: !(image !== null && image !== void 0 && image.url),
     image: image === null || image === void 0 ? void 0 : image.id
@@ -198,51 +221,35 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./src/image-and-text/edit.js");
 /* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./save */ "./src/image-and-text/save.js");
 /* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./block.json */ "./src/image-and-text/block.json");
-/**
- * Registers a new block provided a unique name and an object defining its behavior.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
- */
-
-/**
- * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
- * All files containing `style` keyword are bundled together. The code used
- * gets applied both to the front of your site and to the editor.
- *
- * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
- */
-
-
-/**
- * Internal dependencies
- */
 
 
 
 
-/**
- * Every block starts by registering a new block type definition.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
- */
 
 (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)(_block_json__WEBPACK_IMPORTED_MODULE_4__.name, {
   attributes: {
     image: {
-      type: 'object',
+      type: "object",
       default: {}
     },
     alignmentImage: {
-      type: 'string',
-      default: 'top'
+      type: "string",
+      default: "top"
     },
     alignmentText: {
-      type: 'string',
-      default: 'top'
+      type: "string",
+      default: "top"
     },
     imageLeft: {
-      type: 'boolean',
+      type: "boolean",
       default: true
+    },
+    imageStyle: {
+      type: "string",
+      default: ""
+    },
+    imageLink: {
+      type: "string"
     }
   },
 
@@ -250,10 +257,6 @@ __webpack_require__.r(__webpack_exports__);
    * @see ./edit.js
    */
   edit: _edit__WEBPACK_IMPORTED_MODULE_2__["default"],
-
-  /**
-   * @see ./save.js
-   */
   save: _save__WEBPACK_IMPORTED_MODULE_3__["default"]
 });
 
@@ -275,37 +278,57 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _utilities__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utilities */ "./src/utilities/index.js");
 
 
-/**
- * Retrieves the translation of text.
- *
- * @see https://developer.wordpress.org/block-editor/packages/packages-i18n/
- */
-
-/**
- * React hook that is used to mark the block wrapper element.
- * It provides all the necessary props like the class name.
- *
- * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
- */
 
 
-/**
- * The save function defines the way in which the different attributes should
- * be combined into the final markup, which is then serialized by the block
- * editor into `post_content`.
- *
- * @see https://developer.wordpress.org/block-editor/developers/block-api/block-edit-save/#save
- *
- * @return {WPElement} Element to render.
- */
 
 function save(_ref) {
+  var _props$className;
+
   let {
     attributes
   } = _ref;
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null);
+  const {
+    image,
+    alignmentImage,
+    alignmentText,
+    imageLeft,
+    imageStyle,
+    imageLink
+  } = attributes;
+  const directionClass = imageLeft ? "flex-md-reverse" : "";
+  const props = _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps.save({
+    className: 'py-3 py-lg-4'
+  });
+
+  if (props !== null && props !== void 0 && (_props$className = props.className) !== null && _props$className !== void 0 && _props$className.includes('is-style-boxed-card')) {
+    props.className += ' container mx-auto rounded-corners-md px-lg-5';
+  }
+
+  const theImage = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    width: image.width,
+    height: image.height,
+    loading: "lazy",
+    src: image.url,
+    alt: image.alt
+  });
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", props, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "container"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "row row-cols-lg-2" + directionClass
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "col " + (0,_utilities__WEBPACK_IMPORTED_MODULE_3__.verticalAlignmentClass)(alignmentText, true)
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InnerBlocks.Content, null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "col " + (0,_utilities__WEBPACK_IMPORTED_MODULE_3__.verticalAlignmentClass)(alignmentImage, true)
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "wp-block-image " + imageStyle
+  }, (imageLink === null || imageLink === void 0 ? void 0 : imageLink.length) > 0 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+    href: imageLink
+  }, theImage), (imageLink === null || imageLink === void 0 ? void 0 : imageLink.length) <= 0 && {
+    theImage
+  })))));
 }
 
 /***/ }),
@@ -322,6 +345,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const verticalAlignmentClass = function () {
   let position = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'top';
+  let frontend = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  if (frontend) {
+    return 'align-self-' + position;
+  }
+
   return 'is-vertically-aligned-' + position;
 };
 
@@ -407,7 +436,7 @@ module.exports = window["wp"]["i18n"];
   \***************************************/
 /***/ ((module) => {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"rewind-blocks/image-and-text","version":"0.1.0","title":"Rewind Image + Text","category":"rewind","icon":"smiley","description":"Example static block scaffolded with Create Block tool.","supports":{"html":true},"textdomain":"rewind-gutenblocks","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"rewind-blocks/image-and-text","version":"0.1.0","title":"Rewind Image + Text","category":"rewind","icon":"smiley","description":"Example static block scaffolded with Create Block tool.","supports":{"html":true,"anchor":true,"customClassName":true,"styles":true,"color":{"background":true,"text":false}},"styles":[{"name":"default","label":"Default","isDefault":true},{"name":"boxed-card","label":"Boxed Card"}],"textdomain":"rewind-gutenblocks","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
 
 /***/ })
 

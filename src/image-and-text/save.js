@@ -1,29 +1,41 @@
-/**
- * Retrieves the translation of text.
- *
- * @see https://developer.wordpress.org/block-editor/packages/packages-i18n/
- */
-import { __ } from '@wordpress/i18n';
+import { __ } from "@wordpress/i18n";
+import { useBlockProps } from "@wordpress/block-editor";
+import { InnerBlocks } from "@wordpress/block-editor";
+import { verticalAlignmentClass } from "../utilities";
 
-/**
- * React hook that is used to mark the block wrapper element.
- * It provides all the necessary props like the class name.
- *
- * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
- */
-import { useBlockProps } from '@wordpress/block-editor';
-
-/**
- * The save function defines the way in which the different attributes should
- * be combined into the final markup, which is then serialized by the block
- * editor into `post_content`.
- *
- * @see https://developer.wordpress.org/block-editor/developers/block-api/block-edit-save/#save
- *
- * @return {WPElement} Element to render.
- */
 export default function save({ attributes }) {
+
+	const { image, alignmentImage, alignmentText, imageLeft, imageStyle, imageLink } = attributes;
+
+	const directionClass = imageLeft ? "flex-md-reverse" : "";
+
+	const props = useBlockProps.save({ className: 'py-3 py-lg-4' });
+
+	if (props?.className?.includes('is-style-boxed-card')) {
+		props.className += ' container mx-auto rounded-corners-md px-lg-5';
+	}
+
+	const theImage = <img width={image.width} height={image.height} loading="lazy" src={image.url} alt={image.alt} />;
+
 	return (
-		<></>
+		<div {...props}>
+			<div className="container">
+				<div className={"row row-cols-lg-2" + directionClass}>
+					<div className={"col " + verticalAlignmentClass(alignmentText, true)}>
+						<InnerBlocks.Content />
+					</div>
+					<div
+						className={"col " + verticalAlignmentClass(alignmentImage, true)}
+					>
+						<div className={"wp-block-image " + imageStyle}>
+							{imageLink?.length > 0 && <a href={imageLink}>{theImage}</a>}
+							{imageLink?.length <= 0 && { theImage }}
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	);
+
 }
