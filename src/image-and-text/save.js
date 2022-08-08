@@ -29,7 +29,7 @@ export default function save({ attributes }) {
 					>
 						<div className={"wp-block-image " + imageStyle}>
 							{imageLink?.length > 0 && <a href={imageLink}>{theImage}</a>}
-							{imageLink?.length <= 0 && { theImage }}
+							{imageLink?.length <= 0 && theImage}
 
 						</div>
 					</div>

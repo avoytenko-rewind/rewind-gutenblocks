@@ -32,6 +32,7 @@ function create_rewind_blocks()
 	));
 
 	register_block_type(__DIR__ . '/build/image-and-text');
+	register_block_type(__DIR__ . '/build/wrapper-section');
 }
 
 add_action('init', 'create_rewind_blocks');
