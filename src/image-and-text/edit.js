@@ -12,8 +12,8 @@ import { verticalAlignmentClass } from "../utilities";
 import "./editor.scss";
 
 const MY_TEMPLATE = [
-	["core/heading", { level: 3, content: "Your Title" }],
-	["core/paragraph", { content: "Your text here" }],
+	["core/heading", { level: 3 }],
+	["core/paragraph"],
 ];
 
 export default function Edit({ attributes, setAttributes }) {

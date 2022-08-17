@@ -27,10 +27,10 @@ export default function save({ attributes }) {
 					<div
 						className={`col ${verticalAlignmentClass(alignmentImage, true)} ${imageColumnClass || ""}`}
 					>
-						<div className={"mt-3 mt-lg-0 " + imageStyle}>
-							{imageLink?.length > 0 && <a href={imageLink}>{theImage}</a>}
-							{!imageLink?.length && theImage}
-						</div>
+						
+							{imageLink?.length > 0 && <a className={"wp-rewind-image mt-3 mt-lg-0 " + imageStyle} href={imageLink}>{theImage}</a>}
+							{!imageLink?.length && <div className={"wp-rewind-image mt-3 mt-lg-0 " + imageStyle}>{theImage}</div>}
+						
 					</div>
 				</div>
 			</div>
