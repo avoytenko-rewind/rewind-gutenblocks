@@ -29,6 +29,12 @@ registerBlockType(metadata.name, {
 		},
 		imageLink: {
 			type: "string"
+		},
+		textColumnClass: {
+			type: "string"
+		},
+		imageColumnClass: {
+			type: "string"
 		}
 	},
 	/**

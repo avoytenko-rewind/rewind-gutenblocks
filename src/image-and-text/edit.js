@@ -17,7 +17,7 @@ const MY_TEMPLATE = [
 ];
 
 export default function Edit({ attributes, setAttributes }) {
-	const { image, alignmentImage, alignmentText, imageLeft, imageStyle, imageLink } = attributes;
+	const { image, alignmentImage, alignmentText, imageLeft, imageStyle, imageLink, textColumnClass, imageColumnClass } = attributes;
 
 	return (
 		<div {...useBlockProps({ className: "box-item px-3" })}>
@@ -70,6 +70,18 @@ export default function Edit({ attributes, setAttributes }) {
 						value={imageLink}
 						onChange={(link) => setAttributes({ imageLink: link })}
 					/>
+
+					<TextControl
+						label="Text Column Class"
+						value={textColumnClass}
+						onChange={(classCol) => setAttributes({ textColumnClass: classCol })}
+					/>
+
+					<TextControl
+						label="Image Column Class"
+						value={imageColumnClass}
+						onChange={(classCol) => setAttributes({ imageColumnClass: classCol })}
+					/>
 				</PanelBody>
 			</InspectorControls>
 
@@ -79,7 +91,7 @@ export default function Edit({ attributes, setAttributes }) {
 			>
 				<div
 					className={
-						"wp-block wp-block-column " + verticalAlignmentClass(alignmentText)
+						"wp-block wp-block-column " + verticalAlignmentClass(alignmentText) + " " + textColumnClass
 					}
 				>
 					<InnerBlocks template={MY_TEMPLATE} />
@@ -87,7 +99,7 @@ export default function Edit({ attributes, setAttributes }) {
 				<div
 					className={
 						"wp-block p-3 wp-block-column " +
-						verticalAlignmentClass(alignmentImage)
+						verticalAlignmentClass(alignmentImage) + " " + imageColumnClass
 					}
 				>
 					<div className="box-item text-center">

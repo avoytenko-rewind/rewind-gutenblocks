@@ -5,9 +5,9 @@ import { verticalAlignmentClass } from "../utilities";
 
 export default function save({ attributes }) {
 
-	const { image, alignmentImage, alignmentText, imageLeft, imageStyle, imageLink } = attributes;
+	const { image, alignmentImage, alignmentText, imageLeft, imageStyle, imageLink, textColumnClass, imageColumnClass } = attributes;
 
-	const directionClass = imageLeft ? "flex-md-reverse" : "";
+	const directionClass = imageLeft ? "flex-md-row-reverse" : "";
 
 	const props = useBlockProps.save({ className: 'py-3 py-lg-4' });
 
@@ -20,22 +20,21 @@ export default function save({ attributes }) {
 	return (
 		<div {...props}>
 			<div className="container">
-				<div className={"row row-cols-1 row-cols-lg-2" + directionClass}>
-					<div className={"col " + verticalAlignmentClass(alignmentText, true)}>
+				<div className={"row row-cols-1 row-cols-lg-2 " + directionClass}>
+					<div className={`col ${verticalAlignmentClass(alignmentText, true)} ${textColumnClass || ""}`}>
 						<InnerBlocks.Content />
 					</div>
 					<div
-						className={"col " + verticalAlignmentClass(alignmentImage, true)}
+						className={`col ${verticalAlignmentClass(alignmentImage, true)} ${imageColumnClass || ""}`}
 					>
-						<div className={"wp-block-image " + imageStyle}>
+						<div className={"mt-3 mt-lg-0 " + imageStyle}>
 							{imageLink?.length > 0 && <a href={imageLink}>{theImage}</a>}
-							{imageLink?.length <= 0 && theImage}
-
+							{!imageLink?.length && theImage}
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</div >
 	);
 
 }
