@@ -4,7 +4,7 @@
  * @see https://developer.wordpress.org/block-editor/packages/packages-i18n/
  */
 import { __ } from '@wordpress/i18n';
-
+import { RawHTML } from "@wordpress/element";
 /**
  * React hook that is used to mark the block wrapper element.
  * It provides all the necessary props like the class name.
@@ -22,7 +22,10 @@ import { useBlockProps } from '@wordpress/block-editor';
  *
  * @return {WPElement} Element to render.
  */
-export default function save({attributes}) {
+export default function save({ attributes }) {
+	const { links } = attributes;
+
+	const linkKeys = Object.keys(links);
 
 	return (
 		<section {...useBlockProps.save()}>
@@ -34,11 +37,19 @@ export default function save({attributes}) {
 								<div className="w-100 d-flex align-items-center">
 									<h4 className="mb-0 text-smaller text-center">{attributes.heading}</h4>
 									<div className="navbar-toc rounded-corners-lg px-3 gap-3">
-										<ul className="navbar-nav">
-											<li className="nav-item menu-item">
-												<a href="#generalFeatures" target="_self" className="nav-link text-smaller" rel="noopener">Features</a>
-											</li>
-										</ul>
+										{linkKeys.length > 0 && <ul className="navbar-nav">
+											{linkKeys.map(currentKey => {
+												const currentLink = links[currentKey];
+												return (
+													<li key={currentKey} className="nav-item menu-item">
+														<RawHTML className="nav-link text-smaller">{currentLink.value}</RawHTML>
+														{/* <a href="#generalFeatures" target="_self" className="nav-link text-smaller" rel="noopener">{currentLink.text}</a> */}
+													</li>
+
+												)
+											})}
+
+										</ul>}
 									</div>
 								</div>
 							</div>
