@@ -30,9 +30,17 @@ function create_rewind_blocks()
 			return get_dynamic_block($attributes, 'trusted-logos');
 		}
 	));
-
+	
 	register_block_type(__DIR__ . '/build/image-and-text');
-	register_block_type(__DIR__ . '/build/wrapper-section');
+	// register_block_type(__DIR__ . '/build/wrapper-section');
+
+
+	register_block_type(__DIR__ . '/build/post-cards', array(
+		'render_callback' => function ($attributes) {
+			return get_dynamic_block($attributes, 'post-cards');
+		}
+	));
+
 }
 
 add_action('init', 'create_rewind_blocks');
