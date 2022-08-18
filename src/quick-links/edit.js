@@ -69,7 +69,7 @@ export default function Edit({ attributes, setAttributes }) {
 		})
 	}
 
-	const variableFontSize = linkKeys?.length && linkKeys?.length > 4 ? 'has-extra-small-font-size' : 'has-smaller-font-size';
+	const variableFontSize = linkKeys?.length && linkKeys?.length > 4 ? 'has-extra-small-font-size' : 'has-small-font-size';
 
 
 	return (
