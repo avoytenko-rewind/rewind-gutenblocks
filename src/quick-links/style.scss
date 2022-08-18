@@ -10,7 +10,11 @@
 }
 
 .quick-links .navbar-nav .nav-link {
-	text-decoration: none !important;
+	&,
+	& a {
+		color: inherit;
+		text-decoration: none !important;
+	}
 }
 .quick-links .navbar-nav .nav-item {
 	margin-bottom: 0px;

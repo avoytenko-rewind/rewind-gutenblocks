@@ -69,12 +69,14 @@ export default function Edit({ attributes, setAttributes }) {
 		})
 	}
 
+	const variableFontSize = linkKeys?.length && linkKeys?.length > 4 ? 'has-extra-small-font-size' : 'has-smaller-font-size';
+
 
 	return (
 		<div {...useBlockProps({ className: "box-item" })}>
 			<div style={{ display: "flex", "align-items": "center", padding: "5px 0px" }}>
 				<RichText
-					className="mt-0 mb-0 has-custom-font-size has-normal-font-size"
+					className={"mt-0 mb-0 has-custom-font-size " + variableFontSize}
 					tagName="h4" // The tag here is the element output and editable in the admin
 					value={attributes.heading} // Any existing content, either from the database or an attribute default
 					allowedFormats={['core/bold', 'core/italic']} // Allow the content to be made bold or italic, but do not allow other formatting options
@@ -89,7 +91,7 @@ export default function Edit({ attributes, setAttributes }) {
 						<div className="mx-1" style={{ border: "1px dashed", padding: "5px", "border-radius": "4px", display: "flex", "align-items": "center" }}>
 							<RichText
 								key={currentLink.id}
-								className="has-custom-font-size has-normal-font-size"
+								className={"has-custom-font-size " + variableFontSize}
 								tagName="span" // The tag here is the element output and editable in the admin
 								value={currentLink.value} // Any existing content, either from the database or an attribute default
 								// allowedFormats={['core/bold', 'core/italic']} // Allow the content to be made bold or italic, but do not allow other formatting options
