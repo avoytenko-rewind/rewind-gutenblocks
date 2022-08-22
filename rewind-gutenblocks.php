@@ -30,9 +30,9 @@ function create_rewind_blocks()
 			return get_dynamic_block($attributes, 'trusted-logos');
 		}
 	));
-
+	
 	register_block_type(__DIR__ . '/build/image-and-text');
-	register_block_type(__DIR__ . '/build/wrapper-section');
+
 }
 
 add_action('init', 'create_rewind_blocks');

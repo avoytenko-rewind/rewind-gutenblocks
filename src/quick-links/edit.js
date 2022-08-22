@@ -13,7 +13,7 @@ import { Button, Icon } from '@wordpress/components';
  *
  * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
  */
-import { useBlockProps, RichText, InnerBlocks } from '@wordpress/block-editor';
+import { useBlockProps, RichText } from '@wordpress/block-editor';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -48,11 +48,8 @@ export default function Edit({ attributes, setAttributes }) {
 	}
 
 	function addNewLink() {
-		const countKeys = Object.keys(links).length + 1;
-
+		const countKeys = Object.keys(links).length + 1 + Date.now();
 		const newLinks = { ...links, [countKeys]: { id: countKeys, value: '' } };
-
-		console.log(newLinks);
 		setAttributes({
 			links: newLinks
 		})
@@ -69,12 +66,14 @@ export default function Edit({ attributes, setAttributes }) {
 		})
 	}
 
+	const variableFontSize = linkKeys?.length && linkKeys?.length > 4 ? 'has-extra-small-font-size' : 'has-small-font-size';
+
 
 	return (
 		<div {...useBlockProps({ className: "box-item" })}>
 			<div style={{ display: "flex", "align-items": "center", padding: "5px 0px" }}>
 				<RichText
-					className="mt-0 mb-0 has-custom-font-size has-normal-font-size"
+					className={"mt-0 mb-0 has-custom-font-size " + variableFontSize}
 					tagName="h4" // The tag here is the element output and editable in the admin
 					value={attributes.heading} // Any existing content, either from the database or an attribute default
 					allowedFormats={['core/bold', 'core/italic']} // Allow the content to be made bold or italic, but do not allow other formatting options
@@ -89,15 +88,16 @@ export default function Edit({ attributes, setAttributes }) {
 						<div className="mx-1" style={{ border: "1px dashed", padding: "5px", "border-radius": "4px", display: "flex", "align-items": "center" }}>
 							<RichText
 								key={currentLink.id}
-								className="has-custom-font-size has-normal-font-size"
+								id={"linkEl" + currentLink.id}
+								className={"has-custom-font-size " + variableFontSize}
 								tagName="span" // The tag here is the element output and editable in the admin
 								value={currentLink.value} // Any existing content, either from the database or an attribute default
 								// allowedFormats={['core/bold', 'core/italic']} // Allow the content to be made bold or italic, but do not allow other formatting options
 								onChange={(value) => saveLinkText(value, currentLink.id)} // Store updated content as a block attribute
 								placeholder={__('Link here...')} // Display this text before any content has been added by the user
 							/>
-							<Button onClick={() => deleteLink(currentLink.id)} isDestructive variant="link">
-								Delete
+							<Button style={{"text-decoration": "none"}} onClick={() => deleteLink(currentLink.id)} isDestructive variant="link">
+								<Icon icon="remove" />
 							</Button>
 						</div>
 
@@ -108,7 +108,7 @@ export default function Edit({ attributes, setAttributes }) {
 				{!linkKeys.length && <p className="ms-1 has-custom-font-size has-small-font-size">Add your links here...</p>}
 
 
-				<Button onClick={addNewLink} variant="secondary">Add Link <Icon icon="plus" /></Button>
+				<Button onClick={addNewLink} variant="secondary">Add <Icon icon="plus" /></Button>
 			</div>
 		</div>
 	);
